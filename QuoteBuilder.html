@@ -1292,6 +1292,15 @@
         .settings-section.dragging { opacity: 0.8; background: #ffeef5; border: 2px solid var(--primary-color); transform: scale(1.02); box-shadow: 0 8px 25px rgba(226, 0, 116, 0.3); z-index: 100; }
         .settings-section.drag-over { border-color: var(--primary-color); background: #fff0f7; }
         .settings-section-title { font-weight: 700; font-size: 0.85rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #ddd; display: flex; align-items: center; gap: 8px; }
+        .settings-section-title-text { flex: 1; display: flex; align-items: center; gap: 8px; }
+        .logo-toggle-wrapper { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+        .logo-toggle-label { font-size: 0.65rem; font-weight: 500; color: var(--text-secondary); text-transform: none; letter-spacing: 0; white-space: nowrap; }
+        .switch-xs { position: relative; display: inline-block; width: 32px; height: 18px; flex-shrink: 0; }
+        .switch-xs input { opacity: 0; width: 0; height: 0; }
+        .slider-xs { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #e0e0e0; transition: .3s; border-radius: 18px; }
+        .slider-xs:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: .3s; border-radius: 50%; }
+        input:checked + .slider-xs { background-color: var(--primary-color); }
+        input:checked + .slider-xs:before { transform: translateX(14px); }
         .drag-handle { cursor: grab; color: #999; font-size: 1rem; padding: 2px 4px; border-radius: 4px; transition: all 0.2s; user-select: none; -webkit-user-select: none; touch-action: none; -webkit-touch-callout: none; }
         .drag-handle:hover { color: var(--primary-color); background: #ffeef5; }
         .drag-handle:active { cursor: grabbing; }
@@ -3483,7 +3492,7 @@
 
         <header>
             <!-- T-Mobile Logo (replace TMOBILE_LOGO_BASE64_HERE with actual base64) -->
-            <div class="tmo-logo-wrapper">
+            <div class="tmo-logo-wrapper" onclick="triggerLogoToggle()"
                 <img class="tmo-logo-img" src="data:image/png;base64,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" alt="T-Mobile" onload="this.style.display='block';this.nextElementSibling.style.display='none'" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" style="display:none;">
                 <span class="tmo-text-logo">T-Mobile</span>
             </div>
@@ -3549,8 +3558,17 @@
             <!-- Protection Visibility Style -->
             <div class="settings-section draggable-section" data-section-id="protection-visibility">
                 <div class="settings-section-title">
-                    <span class="drag-handle">⋮⋮</span>
-                    Protection Visibility Style
+                    <div class="settings-section-title-text">
+                        <span class="drag-handle">⋮⋮</span>
+                        Protection Visibility Style
+                    </div>
+                    <div class="logo-toggle-wrapper">
+                        <span class="logo-toggle-label">Toggle with Logo</span>
+                        <label class="switch-xs">
+                            <input type="checkbox" data-logo-toggle="protection-visibility" onchange="updateLogoToggle('protection-visibility', this.checked)">
+                            <span class="slider-xs"></span>
+                        </label>
+                    </div>
                 </div>
                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">Control how protection pricing is displayed</p>
                 <div class="three-way-toggle" id="protection-visibility-toggle">
@@ -3564,8 +3582,17 @@
             <!-- Show Itemized Device List -->
             <div class="settings-section draggable-section" data-section-id="itemized-prices">
                 <div class="settings-section-title">
-                    <span class="drag-handle">⋮⋮</span>
-                    Show Itemized Prices
+                    <div class="settings-section-title-text">
+                        <span class="drag-handle">⋮⋮</span>
+                        Show Itemized Prices
+                    </div>
+                    <div class="logo-toggle-wrapper">
+                        <span class="logo-toggle-label">Toggle with Logo</span>
+                        <label class="switch-xs">
+                            <input type="checkbox" data-logo-toggle="itemized-prices" onchange="updateLogoToggle('itemized-prices', this.checked)">
+                            <span class="slider-xs"></span>
+                        </label>
+                    </div>
                 </div>
                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">Control which items show prices</p>
                 <div class="settings-submenu">
@@ -3617,8 +3644,17 @@
             <!-- Price Adjustments -->
             <div class="settings-section draggable-section" data-section-id="price-adjustments">
                 <div class="settings-section-title">
-                    <span class="drag-handle">⋮⋮</span>
-                    Price Adjustments
+                    <div class="settings-section-title-text">
+                        <span class="drag-handle">⋮⋮</span>
+                        Price Adjustments
+                    </div>
+                    <div class="logo-toggle-wrapper">
+                        <span class="logo-toggle-label">Toggle with Logo</span>
+                        <label class="switch-xs">
+                            <input type="checkbox" data-logo-toggle="price-adjustments" onchange="updateLogoToggle('price-adjustments', this.checked)">
+                            <span class="slider-xs"></span>
+                        </label>
+                    </div>
                 </div>
                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">Add unlisted manual adjustments to all quotes</p>
                 <div class="settings-row">
@@ -3641,8 +3677,17 @@
             <!-- Retail Price Visibility -->
             <div class="settings-section draggable-section" data-section-id="retail-visibility">
                 <div class="settings-section-title">
-                    <span class="drag-handle">⋮⋮</span>
-                    Retail Price Visibility
+                    <div class="settings-section-title-text">
+                        <span class="drag-handle">⋮⋮</span>
+                        Retail Price Visibility
+                    </div>
+                    <div class="logo-toggle-wrapper">
+                        <span class="logo-toggle-label">Toggle with Logo</span>
+                        <label class="switch-xs">
+                            <input type="checkbox" data-logo-toggle="retail-visibility" onchange="updateLogoToggle('retail-visibility', this.checked)">
+                            <span class="slider-xs"></span>
+                        </label>
+                    </div>
                 </div>
                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">Show retail prices on added items</p>
                 <div class="settings-submenu">
@@ -3673,8 +3718,17 @@
             <!-- Total Rounding -->
             <div class="settings-section draggable-section" data-section-id="total-rounding">
                 <div class="settings-section-title">
-                    <span class="drag-handle">⋮⋮</span>
-                    Total Rounding
+                    <div class="settings-section-title-text">
+                        <span class="drag-handle">⋮⋮</span>
+                        Total Rounding
+                    </div>
+                    <div class="logo-toggle-wrapper">
+                        <span class="logo-toggle-label">Toggle with Logo</span>
+                        <label class="switch-xs">
+                            <input type="checkbox" data-logo-toggle="total-rounding" onchange="updateLogoToggle('total-rounding', this.checked)">
+                            <span class="slider-xs"></span>
+                        </label>
+                    </div>
                 </div>
                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">Round final totals up or down</p>
                 <div class="settings-row">
@@ -3691,8 +3745,17 @@
             <!-- Combine Identical Devices -->
             <div class="settings-section draggable-section" data-section-id="combine-devices">
                 <div class="settings-section-title">
-                    <span class="drag-handle">⋮⋮</span>
-                    Combine Identical Devices
+                    <div class="settings-section-title-text">
+                        <span class="drag-handle">⋮⋮</span>
+                        Combine Identical Devices
+                    </div>
+                    <div class="logo-toggle-wrapper">
+                        <span class="logo-toggle-label">Toggle with Logo</span>
+                        <label class="switch-xs">
+                            <input type="checkbox" data-logo-toggle="combine-devices" onchange="updateLogoToggle('combine-devices', this.checked)">
+                            <span class="slider-xs"></span>
+                        </label>
+                    </div>
                 </div>
                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">Group identical devices together when printed (Example: "iPhone 17 x3")</p>
                 <div class="settings-row" style="display: flex; justify-content: space-between; align-items: center;">
@@ -3707,8 +3770,17 @@
             <!-- Quote Display Style -->
             <div class="settings-section draggable-section" data-section-id="display-style">
                 <div class="settings-section-title">
-                    <span class="drag-handle">⋮⋮</span>
-                    Quote Display Style
+                    <div class="settings-section-title-text">
+                        <span class="drag-handle">⋮⋮</span>
+                        Quote Display Style
+                    </div>
+                    <div class="logo-toggle-wrapper">
+                        <span class="logo-toggle-label">Toggle with Logo</span>
+                        <label class="switch-xs">
+                            <input type="checkbox" data-logo-toggle="display-style" onchange="updateLogoToggle('display-style', this.checked)">
+                            <span class="slider-xs"></span>
+                        </label>
+                    </div>
                 </div>
                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">Change how quotes are displayed</p>
                 <div class="settings-row">
@@ -3722,8 +3794,17 @@
             <!-- Store Address -->
             <div class="settings-section draggable-section" data-section-id="store-address">
                 <div class="settings-section-title">
-                    <span class="drag-handle">⋮⋮</span>
-                    Store Address
+                    <div class="settings-section-title-text">
+                        <span class="drag-handle">⋮⋮</span>
+                        Store Address
+                    </div>
+                    <div class="logo-toggle-wrapper">
+                        <span class="logo-toggle-label">Toggle with Logo</span>
+                        <label class="switch-xs">
+                            <input type="checkbox" data-logo-toggle="store-address" onchange="updateLogoToggle('store-address', this.checked)">
+                            <span class="slider-xs"></span>
+                        </label>
+                    </div>
                 </div>
                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">Address to display on printed quotes</p>
                 <div class="settings-row">
@@ -4819,12 +4900,29 @@
         let roundingMode = 'none'; // 'none', 'up-5', 'down-5', 'up-10', 'down-10'
         let showPerLinePricing = false; // Show price per line breakdown
 
+        // Logo Toggle Settings - stores which sections should toggle when logo is clicked
+        let logoToggleSettings = {
+            'protection-visibility': false,
+            'itemized-prices': false,
+            'price-adjustments': false,
+            'retail-visibility': false,
+            'total-rounding': false,
+            'combine-devices': false,
+            'display-style': false,
+            'store-address': false
+        };
+        // Tracks whether logo-toggled sections are currently in "on" or "off" state
+        let logoToggleState = true;
+
         document.addEventListener('DOMContentLoaded', () => {
             // Load settings from URL hash first
             loadSettingsFromURL();
-            
+
             // Load saved section order for Rules
             loadSectionOrder();
+
+            // Load logo toggle settings
+            loadLogoToggleSettings();
             
             resetCalculator();
             document.getElementById('add-row-btn').addEventListener('click', createNewRow);
@@ -5210,7 +5308,121 @@
             combineIdenticalDevices = checked;
             saveSettingsToURL();
         }
-        
+
+        // --- LOGO TOGGLE FUNCTIONS ---
+        function updateLogoToggle(sectionId, enabled) {
+            logoToggleSettings[sectionId] = enabled;
+            saveLogoToggleSettings();
+        }
+
+        function saveLogoToggleSettings() {
+            localStorage.setItem('quoteCalcLogoToggles', JSON.stringify(logoToggleSettings));
+        }
+
+        function loadLogoToggleSettings() {
+            const saved = localStorage.getItem('quoteCalcLogoToggles');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    logoToggleSettings = { ...logoToggleSettings, ...parsed };
+                } catch (e) {
+                    console.error('Failed to parse logo toggle settings', e);
+                }
+            }
+            // Update checkbox states in DOM
+            Object.keys(logoToggleSettings).forEach(sectionId => {
+                const checkbox = document.querySelector(`input[data-logo-toggle="${sectionId}"]`);
+                if (checkbox) {
+                    checkbox.checked = logoToggleSettings[sectionId];
+                }
+            });
+        }
+
+        function triggerLogoToggle() {
+            // Get all sections that have logo toggle enabled
+            const enabledSections = Object.keys(logoToggleSettings).filter(id => logoToggleSettings[id]);
+
+            if (enabledSections.length === 0) return;
+
+            // Toggle the state
+            logoToggleState = !logoToggleState;
+
+            // Toggle each enabled section
+            enabledSections.forEach(sectionId => {
+                toggleSectionBySectionId(sectionId, logoToggleState);
+            });
+        }
+
+        function toggleSectionBySectionId(sectionId, turnOn) {
+            switch (sectionId) {
+                case 'protection-visibility':
+                    // Toggle between 'hidden' and 'always'
+                    setProtectionVisibility(turnOn ? 'always' : 'hidden');
+                    break;
+                case 'itemized-prices':
+                    // Toggle all itemized prices
+                    ['devices', 'connectedDevices', 'homeInternet', 'accessories', 'addons'].forEach(cat => {
+                        const checkbox = document.getElementById(`show-${cat === 'connectedDevices' ? 'cd' : cat === 'homeInternet' ? 'hi' : cat === 'addons' ? 'addon' : cat}-prices`);
+                        if (checkbox) {
+                            checkbox.checked = turnOn;
+                            toggleItemizedCategory(cat, turnOn);
+                        }
+                    });
+                    // Also toggle per line pricing
+                    const perLineCheckbox = document.getElementById('show-per-line');
+                    if (perLineCheckbox) {
+                        perLineCheckbox.checked = turnOn;
+                        togglePerLinePricing(turnOn);
+                    }
+                    break;
+                case 'retail-visibility':
+                    // Toggle all retail visibility
+                    ['devices', 'bts', 'accessories'].forEach(cat => {
+                        const checkbox = document.getElementById(`show-${cat === 'bts' ? 'bts' : cat}-retail`);
+                        if (checkbox) {
+                            checkbox.checked = turnOn;
+                            toggleRetailVisibility(cat, turnOn);
+                        }
+                    });
+                    break;
+                case 'total-rounding':
+                    // Toggle between 'none' and 'up-5'
+                    const roundingSelect = document.getElementById('rounding-mode');
+                    if (roundingSelect) {
+                        roundingSelect.value = turnOn ? 'up-5' : 'none';
+                        updateRoundingMode();
+                    }
+                    break;
+                case 'combine-devices':
+                    const combineCheckbox = document.getElementById('combine-devices');
+                    if (combineCheckbox) {
+                        combineCheckbox.checked = turnOn;
+                        toggleCombineDevices(turnOn);
+                    }
+                    break;
+                case 'display-style':
+                    // Toggle between 'list' and 'stacked'
+                    const displaySelect = document.getElementById('display-style');
+                    if (displaySelect) {
+                        displaySelect.value = turnOn ? 'stacked' : 'list';
+                        updateDisplayStyle(displaySelect.value);
+                    }
+                    break;
+                case 'store-address':
+                    // For store address, we could toggle the include store address option
+                    const storeAddressCheckbox = document.getElementById('include-store-address');
+                    if (storeAddressCheckbox) {
+                        storeAddressCheckbox.checked = turnOn;
+                        saveSettingsToURL();
+                    }
+                    break;
+                case 'price-adjustments':
+                    // Price adjustments don't have a simple toggle state
+                    // We could potentially enable/disable the adjustments list visibility
+                    break;
+            }
+        }
+
         function applyRounding(value) {
             if (roundingMode === 'none') return value;
             
